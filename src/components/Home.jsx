@@ -10,20 +10,45 @@ function Home() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [post, setPost] = useState();
+  const api = helpHttp();
+  const [home, setHome] = useState()
 
+  
   useEffect(() => {
     setLoading(true);
-    helpHttp().get(urlApi).then((res) => {
+    helpHttp()
+      .get(urlApi)
+      .then((res) => {
+        if (!res.err) {
+          setData(res);
+          setError(null);
+        } else {
+          setData(null);
+          setError(res);
+        }
+        setLoading(false);
+      });
+  }, []);
+
+  const createData = (dataPost) => {
+    dataPost.id = Date.now();
+    //console.log(dataPost);
+
+    let options = {
+      body: dataPost,
+      headers: { "content-type": "application/json" },
+    };
+
+    api.post(urlApi, options).then((res) => {
+      //console.log(res);
       if (!res.err) {
-        setData(res);
-        setError(null);
+        setPost("post ok");
       } else {
-        setData(null);
         setError(res);
       }
-      setLoading(false);
     });
-  }, []);
+  };
 
   return (
     <div className="container">
@@ -33,10 +58,10 @@ function Home() {
           <h1>no data</h1>
           {error && (
             <>
-            <Message
-              msg={`Error ${error.status}: ${error.statusText}`}
-              bgColor="#dc3545"
-            />
+              <Message
+                msg={`Error ${error.status}: ${error.statusText}`}
+                bgColor="#dc3545"
+              />
             </>
           )}
           {loading && <Loader />}
