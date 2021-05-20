@@ -48,8 +48,6 @@ function Home() {
 
   const createData = (dataPost) => {
     dataPost.id = Date.now();
-    //console.log(dataPost);
-
     let options = {
       body: dataPost,
       headers: { "content-type": "application/json" },
