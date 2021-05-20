@@ -15,7 +15,22 @@ function Home() {
   const [home, setHome] = useState()
 
   
+
   useEffect(() => {
+    fetch(urlApi, {
+      method: "GET",
+      headers: {
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res) {
+          setData(res);
+        }
+      });
+  }, []);
+
+/*   useEffect(() => {
     setLoading(true);
     helpHttp()
       .get(urlApi)
@@ -29,7 +44,7 @@ function Home() {
         }
         setLoading(false);
       });
-  }, []);
+  }, []); */
 
   const createData = (dataPost) => {
     dataPost.id = Date.now();

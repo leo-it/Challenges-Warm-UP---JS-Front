@@ -1,16 +1,45 @@
 import React, { useState } from "react";
 import { helpHttp } from "../helpers/helpHttp";
+import { urlApi } from "../constant/url";
 
 function Item({ el }) {
   const [edit, setEdit] = useState(false);
   const [updateTitle, setUpdateTitle] = useState();
   const [updateBody, setUpdateBody] = useState();
   const [detalle, setDetalle] = useState(false);
+/*   const [error, setError] = useState(null);
+ */  const api = helpHttp();
+  const [data, setData] = useState();
 
   const handleClickEditar = () => {
-    setEdit(false);
+    let endpoint = `${urlApi}/${el.id}`;
+
+    fetch(endpoint, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: updateTitle,
+        body: updateBody,
+      }),
+    }).then((res) => res.json());
   };
-  const handleClickEliminar = () => {};
+
+  const handleClickEliminar = () => {
+    fetch(`${urlApi}/${el.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: el.id }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) window.location.reload();
+      });
+  };
+
   return (
     <>
       <div>
@@ -28,7 +57,7 @@ function Item({ el }) {
                       setUpdateTitle(e.target.value);
                     }}
                     className="form-control "
-                    placeholder={el.title}
+                    placeholder={el.titulo}
                   />
                 </div>
 
@@ -39,7 +68,7 @@ function Item({ el }) {
                       setUpdateBody(e.target.value);
                     }}
                     className="form-control "
-                    placeholder={el.body}
+                    placeholder={el.titulo}
                   />
                 </div>
                 <div className="mb-3 mx-auto col-lg-8 formulario">
@@ -56,19 +85,31 @@ function Item({ el }) {
         ) : (
           <>
             <div className="container ">
-              <h3 className="text-capitalize col-lg-12 col-sm-6"> {el.title}</h3>
+              <h3 className="text-capitalize col-lg-12 col-sm-6">
+                {" "}
+                {el.title}
+              </h3>
 
-             {detalle||
-
-              <button onClick={(e)=>{setDetalle(true)}} className="btn bg-primary">
-                Detalle
-              </button>
-              }
-              {detalle&&
-               <button onClick={(e)=>{setDetalle(false)}} className="btn bg-primary">
-               esconder
-             </button>
-              }
+              {detalle || (
+                <button
+                  onClick={(e) => {
+                    setDetalle(true);
+                  }}
+                  className="btn bg-primary"
+                >
+                  Detalle
+                </button>
+              )}
+              {detalle && (
+                <button
+                  onClick={(e) => {
+                    setDetalle(false);
+                  }}
+                  className="btn bg-primary"
+                >
+                  esconder
+                </button>
+              )}
               <button
                 onClick={() => setEdit(true)}
                 className="btn bg-secondary"
@@ -78,11 +119,8 @@ function Item({ el }) {
               <button onClick={handleClickEliminar} className="btn bg-danger">
                 Eliminar
               </button>
-              
-            {detalle&&
-            <h5>{el.body}</h5>
-            
-            }
+
+              {detalle && <h5>{el.body}</h5>}
             </div>
           </>
         )}
