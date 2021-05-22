@@ -22,6 +22,7 @@ function Item({ el }) {
         body: updateBody,
       }),
     }).then((res) => res.json())
+ 
   }else{
     Swal.fire("complete the fields please");
   }
@@ -37,7 +38,7 @@ function Item({ el }) {
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.ok) window.location.reload();
+        Swal.fire("Eliminado")
       });
   };
 
@@ -58,7 +59,6 @@ function Item({ el }) {
                       setUpdateTitle(e.target.value);
                     }}
                     className="form-control "
-                    placeholder={el.titulo}
                   />
                 </div>
 
@@ -69,7 +69,6 @@ function Item({ el }) {
                       setUpdateBody(e.target.value);
                     }}
                     className="form-control "
-                    placeholder={el.titulo}
                   />
                 </div>
                 <div className="mb-3 mx-auto col-lg-8 formulario">
@@ -86,10 +85,10 @@ function Item({ el }) {
         ) : (
           <>
             <div className="container ">
-              <h3 className="text-capitalize col-lg-12 col-sm-6">
+              <h4 className="text-capitalize col-lg-12 col-sm-6">
                 {" "}
                 {el.title}
-              </h3>
+              </h4>
 
               {detalle || (
                 <button
@@ -108,7 +107,7 @@ function Item({ el }) {
                   }}
                   className="btn bg-primary"
                 >
-                  esconder
+                  Esconder
                 </button>
               )}
               <button
@@ -121,7 +120,7 @@ function Item({ el }) {
                 Eliminar
               </button>
 
-              {detalle && <h5>{el.body}</h5>}
+              {detalle && <p>{el.body}</p>}
             </div>
           </>
         )}
