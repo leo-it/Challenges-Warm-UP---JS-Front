@@ -22,6 +22,9 @@ function Item({ el }) {
         body: updateBody,
       }),
     }).then((res) => res.json())
+    .then(Swal.fire("Editado")
+    .then(setEdit(false))
+)
  
   }else{
     Swal.fire("complete the fields please");
@@ -55,6 +58,8 @@ function Item({ el }) {
 
                   <input
                     type="text"
+                    placeholder={el.title}
+
                     onInput={(e) => {
                       setUpdateTitle(e.target.value);
                     }}
@@ -68,6 +73,7 @@ function Item({ el }) {
                     onInput={(e) => {
                       setUpdateBody(e.target.value);
                     }}
+                    placeholder={el.body}
                     className="form-control "
                   />
                 </div>
