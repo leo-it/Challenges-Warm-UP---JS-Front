@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { urlApi } from "../constant/url";
+import Swal from 'sweetalert2'
 
 function Item({ el }) {
   const [edit, setEdit] = useState(false);
@@ -7,9 +8,10 @@ function Item({ el }) {
   const [updateBody, setUpdateBody] = useState();
   const [detalle, setDetalle] = useState(false);
 
+
   const handleClickEditar = () => {
     let endpoint = `${urlApi}/${el.id}`;
-
+    if (updateTitle && updateBody) {
     fetch(endpoint, {
       method: "PUT",
       headers: {
@@ -19,7 +21,10 @@ function Item({ el }) {
         title: updateTitle,
         body: updateBody,
       }),
-    }).then((res) => res.json());
+    }).then((res) => res.json())
+  }else{
+    Swal.fire("complete the fields please");
+  }
   };
 
   const handleClickEliminar = () => {
