@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { helpHttp } from "../helpers/helpHttp";
 import { urlApi } from "../constant/url";
 
 function Item({ el }) {
@@ -7,9 +6,6 @@ function Item({ el }) {
   const [updateTitle, setUpdateTitle] = useState();
   const [updateBody, setUpdateBody] = useState();
   const [detalle, setDetalle] = useState(false);
-/*   const [error, setError] = useState(null);
- */  const api = helpHttp();
-  const [data, setData] = useState();
 
   const handleClickEditar = () => {
     let endpoint = `${urlApi}/${el.id}`;
